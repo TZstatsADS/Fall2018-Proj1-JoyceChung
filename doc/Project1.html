@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Chenzhong Zhong,cz2486" />
+
+
+<title>Exploration Analysis of Happy Moments Data</title>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("section-TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="fluid-row" id="section-header">
+
+
+
+<h1 class="title toc-ignore">Exploration Analysis of Happy Moments Data</h1>
+<h4 class="author"><em>Chenzhong Zhong,cz2486</em></h4>
+<h4 class="date"><em>2018/9/19</em></h4>
+
+</div>
+
+
+<pre class="r"><code>hm_data &lt;- read_csv(&quot;processed_moments.csv&quot;)
+
+urlfile&lt;-&#39;https://raw.githubusercontent.com/rit-public/HappyDB/master/happydb/data/demographic.csv&#39;
+demo_data &lt;- read_csv(urlfile)</code></pre>
+<p>Here’s my exploration analysis on “happy moments” data. What makes people happy? To give a preliminary answer, I did text analysis on the level of sigle words and 2-word phrases. Also I included <em>predict_category</em> , which classifies these happy moments, to further identify the causes.</p>
+<div id="section-overview" class="section level3">
+<h3>Overview</h3>
+<p>When we look at single words, we can see from wordcloud that the most frequent words are friend, day, and time. And from the network, it’s obvious that people have fun doing a lot of things with their friends.</p>
+<iframe data-deferred-src="app08711adfd66e78afc379cd66347e47b1/?w=&amp;__subapp__=1" width="100%" height="400" class="shiny-frame shiny-frame-deferred"></iframe>
+</div>
+<div id="section-individual-terms" class="section level3">
+<h3>Individual Terms</h3>
+<p>Next, I looked into gender, marital status, parenthood, and reflection period. If a word is on the diagonal, then its influence is clearly not sensitive to whatever factor we focus on.</p>
+<p>While men and women have eqaul proportions of happy moments with their spouses, men mentioned more about sports and women mentions more about makeup and crochet, but these words are on the bottomleft of the plot, so the difference is not very significant.</p>
+<p>For married people, their happy moments are more about their family members, yet for unmarried people, girlfriends and boyfriends are more mentioned.</p>
+<p>Parents enjoys more happy moments with their kids, especially daughters.</p>
+<iframe data-deferred-src="app88e61eedf67c6d5c872e42040da37205/?w=&amp;__subapp__=1" width="100%" height="400" class="shiny-frame shiny-frame-deferred"></iframe>
+</div>
+<div id="section-bigram" class="section level3">
+<h3>Bigram</h3>
+<p>When it comes to 2-word level, the diffenrence between proportions of the phrases, “video game” and “spend time”, is the most obvious. It seems that video games contribute more to the happiness of people who are male, single, or nonparents. And it’s worth mentioning that a special day with mother is the first cause of happy moments that can last for 3 months.</p>
+<iframe data-deferred-src="app94b71eeed7b63c2d1ed84a84a75da4ec/?w=&amp;__subapp__=1" width="100%" height="400" class="shiny-frame shiny-frame-deferred"></iframe>
+</div>
+<div id="section-categories" class="section level3">
+<h3>Categories</h3>
+<p>When we look at the category of these moments, the main diffenrence between groups lies in the proportions of “affection” and “achievements”. Men, nonparents, single people tend to value their achievements more than their affections.</p>
+<iframe data-deferred-src="appc6e727169013c7c8f7db5c1f30a016b9/?w=&amp;__subapp__=1" width="100%" height="400" class="shiny-frame shiny-frame-deferred"></iframe>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
