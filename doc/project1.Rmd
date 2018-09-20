@@ -372,3 +372,121 @@ serverCat=function(input,output,session)
 shinyApp(uiCat,serverCat)
 ```
 
+### Achievements
+
+Since achievement and affection are two main topic here, I want to look further into the details.
+Video games still plays an important roll in the sense of achievement for people who are single, nonparents and male. In fact "video game" never appears on the bigram rank of the opposite groups. Women view losing weight as a great acahievement. Parents and married people are proud of their new car.
+
+```{r shiny UI5, echo=FALSE, message=FALSE, warning=FALSE}
+uiAchi=navbarPage("What makes you happy",tabPanel("Achievements",
+                          
+                            titlePanel(h1("Achievements",
+                                        align = "center")),
+                          
+                          sidebarLayout(
+                            sidebarPanel(
+                              selectInput(inputId = "attr2",
+                                          label = "Select the attribute:",
+                                          choices = c("Gender" = "gender",
+                                                      "Marital Status" = "marital",
+                                                      "Parenthood" = "parenthood",
+                                                      "Reflection Period" = "reflection_period")
+                              ),
+                              numericInput(inputId = "topBigrams1",
+                                          label = "Number of top pairs to view:",
+                                          min = 1,
+                                          max = 25,
+                                          value = 10)
+                            ),
+                            
+                            mainPanel(
+                              plotOutput(outputId = "bar2")
+                            )
+                          )
+                 )
+) 
+```
+
+```{r shiny server5, echo=FALSE, message=FALSE, warning=FALSE}
+serverAchi=function(input,output,session)
+{
+  selectedAchi <- reactive({
+    list(var = input$attr2)
+  })
+  
+  output$bar2 <- renderPlot({
+    hm_bigrams[hm_bigrams$predicted_category=="achievement",] %>%
+      count(!!as.name(selectedAchi()$var), bigram, sort = TRUE) %>%
+      group_by(!!as.name(selectedAchi()$var)) %>%
+      top_n(input$topBigrams1) %>%
+      ungroup() %>%
+      mutate(bigram = reorder(bigram, n)) %>%
+      ggplot(aes(bigram, n, fill = !!as.name(selectedAchi()$var))) +
+      geom_col(show.legend = FALSE) +
+      facet_wrap(as.formula(paste("~", selectedAchi()$var)), ncol = 2, scales = "free") +
+      coord_flip()
+  })
+}
+```
+```{r shiny app5, echo=FALSE, message=FALSE, warning=FALSE}
+shinyApp(uiAchi,serverAchi)
+```
+
+### Affection
+
+As for affection, the difference between groups id not very significant, except for the reflection period. And again, the term "mother day" pops out at the first place in the group of 3 months.
+
+```{r shiny UI6, echo=FALSE, message=FALSE, warning=FALSE}
+uiAffe=navbarPage("What makes you happy",tabPanel("Affection",
+                          
+                            titlePanel(h1("Affection",
+                                        align = "center")),
+                          
+                          sidebarLayout(
+                            sidebarPanel(
+                              selectInput(inputId = "attr3",
+                                          label = "Select the attribute:",
+                                          choices = c("Gender" = "gender",
+                                                      "Marital Status" = "marital",
+                                                      "Parenthood" = "parenthood",
+                                                      "Reflection Period" = "reflection_period")
+                              ),
+                              numericInput(inputId = "topBigrams2",
+                                          label = "Number of top pairs to view:",
+                                          min = 1,
+                                          max = 25,
+                                          value = 10)
+                            ),
+                            
+                            mainPanel(
+                              plotOutput(outputId = "bar3")
+                            )
+                          )
+                 )
+) 
+```
+
+```{r shiny server6, echo=FALSE, message=FALSE, warning=FALSE}
+serverAffe=function(input,output,session)
+{
+  selectedAffe <- reactive({
+    list(var = input$attr3)
+  })
+  
+  output$bar3 <- renderPlot({
+    hm_bigrams[hm_bigrams$predicted_category=="affection",] %>%
+      count(!!as.name(selectedAffe()$var), bigram, sort = TRUE) %>%
+      group_by(!!as.name(selectedAffe()$var)) %>%
+      top_n(input$topBigrams2) %>%
+      ungroup() %>%
+      mutate(bigram = reorder(bigram, n)) %>%
+      ggplot(aes(bigram, n, fill = !!as.name(selectedAffe()$var))) +
+      geom_col(show.legend = FALSE) +
+      facet_wrap(as.formula(paste("~", selectedAffe()$var)), ncol = 2, scales = "free") +
+      coord_flip()
+  })
+}
+```
+```{r shiny app6, echo=FALSE, message=FALSE, warning=FALSE}
+shinyApp(uiAffe,serverAffe)
+```
