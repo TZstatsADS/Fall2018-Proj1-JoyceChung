@@ -6,6 +6,10 @@ output: html_document
 runtime: shiny
 ---
 
+```{r}
+sessionInfo()
+```
+
 ```{r load libraries, message=FALSE, warning=FALSE, include=FALSE}
 
 library(tidyverse)
@@ -260,7 +264,7 @@ shinyApp(uiInd,serverInd)
 
 ### Bigram
 
-When it comes to 2-word level, the diffenrence between proportions of the phrases, "video game" and "spend time", is the most obvious. It seems that video games contribute more to the happiness of people who are male, single, or nonparents. And it's worth mentioning that a special day with mother is the first cause of happy moments that can last for 3 months.
+When it comes to 2-word level, the diffenrence between proportions of the phrases, "video game" and "spend time", is the most obvious. It seems that video games contribute more to the happiness of people who are male, single, or nonparents. And it's worth mentioning that a special day with mother is the first cause of happy moments that have reflection period of 3 months.
 
 ```{r shiny UI3, echo=FALSE, message=FALSE, warning=FALSE}
 uiBigram=navbarPage("What Makes You Happy",
